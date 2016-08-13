@@ -10,7 +10,7 @@
       rhel6"
     register: registered
   - name: Enable Repositories
-    command: subscription-manager repos --enable=rhel-satellite-tools-rpms
+    command: subscription-manager repos --enable=rhel-6-server-satellite-tools-6.1-rpms
     when: registered|success
   - name: Install Katello Agent
     yum: pkg=katello-agent state=latest

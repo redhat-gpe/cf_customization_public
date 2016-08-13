@@ -1,13 +1,12 @@
 ---
-- hosts: all
+- hosts: '{{ inventory_hostname }}'
   tasks:
   - name: Set hostname
     hostname: name='{{ inventory_hostname }}'
   - name: Install Cert
     command: "/usr/bin/yum -y localinstall http://sat.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
   - name: Register with Satellite
-    command: "/usr/sbin/subscription-manager register --org Default_Organization --activationkey --force
-      rhel6"
+    command: "/usr/sbin/subscription-manager register --org Default_Organization --force --activationkey rhel6"
     register: registered
   - name: Enable Repositories
     command: subscription-manager repos --enable=rhel-6-server-satellite-tools-6.1-rpms

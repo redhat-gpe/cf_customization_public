@@ -1,8 +1,8 @@
 ---
-- hosts: {{ ansible_ssh_host }}
+- hosts: all
   tasks:
   - name: Set hostname
-    hostname: name={{ hostname }}
+    hostname: name='{{ hostname }}'
   - name: Install Cert
     command: "/usr/bin/yum -y localinstall http://sat.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
   - name: Register with Satellite

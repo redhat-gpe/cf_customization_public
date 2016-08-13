@@ -1,0 +1,43 @@
+---
+- hosts: {{ ansible_ssh_host }}
+  tasks:
+  - name: Set hostname
+    hostname: name={{ hostname }}
+  - name: Install Cert
+    command: "/usr/bin/yum -y localinstall http://sat.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
+  - name: Register with Satellite
+    command: "/usr/sbin/subscription-manager register --org Default_Organization --activationkey
+      rhel6"
+    register: registered
+  - name: Enable Repositories
+    command: subscription-manager repos --enable=rhel-satellite-tools-rpms
+    when: registered|success
+  - name: Install Katello Agent
+    yum: pkg=katello-agent state=latest
+    when: registered|success
+    notify:
+    - Enable Katello Agent
+    - Start Katello Agent
+  - name: Install Puppet
+    yum: pkg=puppet state=latest
+    when: registered|success
+    register: puppet_installed
+    notify:
+    - Enable Puppet
+  - name: Configure Puppet Agent
+    command: "/usr/bin/puppet config set server sat.example.com --section agent"
+    when: puppet_installed|success
+  - name: Run Puppet Test
+    command: "/usr/bin/puppet agent --test --noop --onetime --waitforcert 60"
+    when: puppet_installed|success
+  - name: Start Puppet
+    service: name=puppet state=started
+  - name: Update all packages
+    command: "/usr/bin/yum -y update"
+  handlers:
+  - name: Enable Katello Agent
+    service: name=goferd enabled=yes
+  - name: Start Katello Agent
+    service: name=goferd state=started
+  - name: Enable Puppet
+    service: name=puppet enabled=yes

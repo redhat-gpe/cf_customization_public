@@ -6,7 +6,7 @@
   - name: Install Cert
     command: "/usr/bin/yum -y localinstall http://sat.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
   - name: Register with Satellite
-    command: "/usr/sbin/subscription-manager register --org Default_Organization --activationkey
+    command: "/usr/sbin/subscription-manager register --org Default_Organization --activationkey --force
       rhel6"
     register: registered
   - name: Enable Repositories

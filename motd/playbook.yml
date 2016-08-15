@@ -1,4 +1,5 @@
-- host: all
-  # Load the role to produce the /etc/motd file
-  roles:
-    - motd
+---
+  - host: all
+    # Load the role to produce the /etc/motd file
+    roles:
+      - motd

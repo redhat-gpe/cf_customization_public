@@ -4,4 +4,4 @@
   vars:
     motd_message: 
   roles:
-    - kbrebanov.motd
+    - motd

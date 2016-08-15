@@ -1,8 +1,0 @@
----
-- name: MOTD
-  hosts: all
-  vars:
-    motd_message: "Hi"
-    motd_ascii_logo: "CloudForms Rules"
-  roles:
-    - kbrebanov.motd

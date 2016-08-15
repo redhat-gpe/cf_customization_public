@@ -8,5 +8,4 @@
   vars:
     motd_ascii_art: "CloudForms Rules"
   roles:
-    - jtyr.motd
-      when: package_installed|success
+    - { role: jtyr.motd, when: package_installed|success }

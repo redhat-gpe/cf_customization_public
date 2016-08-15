@@ -1,11 +1,10 @@
 ---
 - name: MOTD
   hosts: all
-  tasks:
+  pre_tasks:
     - name: Install SELinux requirement
       yum: pkg=libselinux-python state=latest
-      register: package_installed
   vars:
     motd_ascii_art: "CloudForms Rules"
   roles:
-    - { role: jtyr.motd, when: package_installed == 'success' }
+    - jtyr.motd

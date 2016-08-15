@@ -1,6 +1,9 @@
 ---
 - name: MOTD
   hosts: all
+  tasks:
+    - name: Install SELinux requirement
+      yum: pkg=libselinux-python state=latest
   vars:
     motd_ascii_art: "CloudForms Rules"
   roles:

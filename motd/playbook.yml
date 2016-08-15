@@ -5,4 +5,4 @@
     motd_message: "Hi"
     motd_ascii_logo: "CloudForms Rules"
   roles:
-    - role: 'kbrebanov.motd'
+    - kbrebanov.motd

@@ -4,7 +4,9 @@
   tasks:
     - name: Install SELinux requirement
       yum: pkg=libselinux-python state=latest
+      register: package_installed
   vars:
     motd_ascii_art: "CloudForms Rules"
   roles:
     - jtyr.motd
+      when: package_installed|success

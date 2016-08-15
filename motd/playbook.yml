@@ -1,4 +1,6 @@
-- hosts: all
+---
+- name: MOTD
+  hosts: all
   vars:
     motd_message: 
   roles:

@@ -1,4 +1,5 @@
----
 - hosts: all
+  vars:
+    motd_message: 
   roles:
-    - jtyr.motd
+    - kbrebanov.motd

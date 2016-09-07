@@ -23,11 +23,20 @@
     register: puppet_installed
     notify:
     - Enable Puppet
-  - name: Configure Puppet Agent
+  - name: Configure Puppet Agent Server
     command: "/usr/bin/puppet config set server sat.example.com --section agent"
+    when: puppet_installed|success
+  - name: Configure Puppet Agent Client
+    command: "/usr/bin/puppet config --section main set certname {{ inventory_hostname }}"
+    when: puppet_installed|success
+  - name: Configure Puppet Agent Client
+    command: "/usr/bin/puppet config --section agent set environment KT_Default_Organization_Library_RHEL6_2"
     when: puppet_installed|success
   - name: Run Puppet Test
     command: "/usr/bin/puppet agent --test --noop --onetime --waitforcert 60"
+    when: puppet_installed|success
+  - name: Apply Puppet
+    command: "/usr/bin/puppet agent -t --server sat.example.com"
     when: puppet_installed|success
   - name: Start Puppet
     service: name=puppet state=started

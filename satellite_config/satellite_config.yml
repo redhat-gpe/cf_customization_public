@@ -38,6 +38,7 @@
   - name: Apply Puppet
     command: "/usr/bin/puppet agent -t --server sat.example.com"
     when: puppet_installed|success
+    ignore_errors: yes
   - name: Start Puppet
     service: name=puppet state=started
   - name: Update all packages

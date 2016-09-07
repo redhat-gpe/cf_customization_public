@@ -26,10 +26,10 @@
   - name: Configure Puppet Agent Server
     command: "/usr/bin/puppet config set server sat.example.com --section agent"
     when: puppet_installed|success
-  - name: Configure Puppet Agent Client
+  - name: Configure Puppet Agent Client Name
     command: "/usr/bin/puppet config --section main set certname {{ inventory_hostname }}"
     when: puppet_installed|success
-  - name: Configure Puppet Agent Client
+  - name: Configure Puppet Agent Environment
     command: "/usr/bin/puppet config --section agent set environment KT_Default_Organization_Library_RHEL6_2"
     when: puppet_installed|success
   - name: Run Puppet Test

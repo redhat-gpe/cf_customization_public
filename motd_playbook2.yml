@@ -5,6 +5,6 @@
     - name: Install SELinux requirement
       yum: pkg=libselinux-python state=latest
   vars:
-    motd_ascii_art: {{ motd_text }}
+    motd_ascii_art: "{{ motd_text }}"
   roles:
     - jtyr.motd

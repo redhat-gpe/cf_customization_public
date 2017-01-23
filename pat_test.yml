@@ -1,0 +1,31 @@
+---
+- name: Bastion Host MOTD
+  hosts: tag_AnsibleGroup_bastions
+  vars:
+    motd_ascii_art: "This is a bastion host"
+  roles:
+    - jtyr.motd
+- name: Infra Node MOTD
+  hosts: tag_AnsibleGroup_infranodes
+  vars:
+    motd_ascii_art: "This is an infranode"
+  roles:
+    - jtyr.motd
+- name: Master Host MOTD
+  hosts: tag_AnsibleGroup_masters
+  vars:
+    motd_ascii_art: "This is a master host"
+  roles:
+    - jtyr.motd
+- name: NFS Host MOTD
+  hosts: tag_AnsibleGroup_nfs
+  vars:
+    motd_ascii_art: "This is an NFS host"
+  roles:
+    - jtyr.motd
+- name: Node MOTD
+  hosts: tag_AnsibleGroup_nodes
+  vars:
+    motd_ascii_art: "This is a node"
+  roles:
+    - jtyr.motd

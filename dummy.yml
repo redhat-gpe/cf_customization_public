@@ -1,6 +1,6 @@
 ---
 - name: Ping
-  hosts: ansible-tower
+  hosts: localhost
   connection: local
   gather_facts: no
   tasks:

@@ -1,0 +1,36 @@
+---
+- name: Add Disk to RHV VM
+  hosts: localhost
+  connection: local
+  vars_files:
+    - "../group_vars/all/rhv-vars"
+  tasks:
+    - debug: var=manageiq
+    - debug: var=manageiq.api_url
+    - debug: var=manageiq.api_token
+    - debug: var=manageiq.service
+    - debug: var=manageiq.event_target
+
+    - block:
+        - name: Include oVirt password
+          no_log: true
+          include_vars: ovirt_password.yml
+        - name: Obtain SSO token
+          no_log: false
+          ovirt_auth:
+            url: "{{ url }}"
+            username: "{{ username }}"
+            password: "{{ password }}"
+            ca_file: "{{ ca_file }}"
+        - name: Create and attach new disk to VM
+          ovirt_disks:
+            name: {{ vm_id }}_data_disk
+            vm_id: {{ vm_id }}
+            size: 10GiB
+            format: cow
+            interface: virtio
+      always:
+        - name: Revoke the SSO token
+          ovirt_auth:
+            state: absent
+            ovirt_auth: "{{ ovirt_auth }}"

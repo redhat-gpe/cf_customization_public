@@ -2,36 +2,45 @@
 - name: Add Disk to RHV VM
   hosts: localhost
   connection: local
-  #vars_files:
-  #  - "../group_vars/all/rhv-vars"
   tasks:
-    - debug: var=manageiq
-    - debug: var=manageiq.api_url
-    - debug: var=manageiq.api_token
-    - debug: var=manageiq.service
-    - debug: var=manageiq.event_target
+    # Show CloudForms provided authentication back to its API
+    #- debug: var=manageiq
+    #- debug: var=manageiq.api_url
+    #- debug: var=manageiq.api_token
+    #- debug: var=manageiq.service
+    #- debug: var=manageiq.event_target
+    # Show variables used to contact RHV-M API
     - debug: var=url
     - debug: var=username
-    - debug: var=password
+    # Only enable if you really want passwords showing up in logfiles.
+    #- debug: var=password
     - debug: var=vm_id
 
     - block:
-        - name: Obtain SSO token
+        - name: Obtain SSO token from RHV-M and store in ovirt_auth
           no_log: false
           ovirt_auth:
             url: "{{ url }}"
             username: "{{ username }}"
             password: "{{ password }}"
+            # We have to use insecure because CloudForms is not aware of the RHVM external hostname in the lab environment.
             insecure: true
+            # In practice you really should use a ca_file and set insecure to false.
             #ca_file: "/usr/local/readablebytower/ovirt-ca.pem"
         - name: Create and attach new disk to VM
           ovirt_disks:
             auth: "{{ ovirt_auth }}"
             name: "{{ vm_id }}_data_disk"
             vm_id: "{{ vm_id }}"
+            # Could be provided as an extra var
             size: "10GiB"
             format: "cow"
             interface: "virtio"
+            # Could be provided as an extra var
+            storage_domain: "vmstore00"
+        - name: Start VM
+          ovirt_vms:
+            state: running
       always:
         - name: Revoke the SSO token
           ovirt_auth:

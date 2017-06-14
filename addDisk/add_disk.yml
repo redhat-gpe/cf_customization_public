@@ -41,7 +41,7 @@
         - name: Start VM
           ovirt_vms:
             auth: "{{ ovirt_auth }}"
-            vm_id: "{{ vm_id }}"
+            id: "{{ vm_id }}"
             state: running
       always:
         - name: Revoke the SSO token

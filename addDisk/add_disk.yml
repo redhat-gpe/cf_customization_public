@@ -10,6 +10,10 @@
     - debug: var=manageiq.api_token
     - debug: var=manageiq.service
     - debug: var=manageiq.event_target
+    - debug: var=url
+    - debug: var=username
+    - debug: var=password
+    - debug: var=vm_id
 
     - block:
         - name: Obtain SSO token

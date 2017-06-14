@@ -2,6 +2,11 @@
 - name: Add Disk to RHV VM
   hosts: localhost
   connection: local
+  vars:
+    # Max retry and interval to talk to CloudForms API
+    max_retries: 9
+    retry_interval: 20
+    
   tasks:
     # Show CloudForms provided authentication back to its API
     #- debug: var=manageiq
@@ -15,6 +20,7 @@
     # Only enable if you really want passwords showing up in logfiles.
     #- debug: var=password
     - debug: var=vm_id
+    - debug: var=provider_href
 
     - block:
         - name: Obtain SSO token from RHV-M and store in ovirt_auth
@@ -43,6 +49,45 @@
             auth: "{{ ovirt_auth }}"
             id: "{{ vm_id }}"
             state: running
+        # Build URL to talk back to cloudforms API
+        - name: Set the Provider URL
+          set_fact:
+            provider_url: "{{ manageiq.api_url }}/api/{{ provider_href }}"
+        - name: Refresh provider in CloudForms
+          uri:
+            url: "{{ provider_url }}"
+            method: POST
+            body:
+              action: refresh
+            body_format: json
+            validate_certs: False
+            headers:
+              X-Auth-Token: "{{ manageiq.api_token }}"
+              Content-Type: "application/json" 
+            status_code: 200
+          register: output
+        - debug: var=output
+        - name: set the task href
+          set_fact:
+            task_url: "{{ output.json.task_href}}"
+        - debug: var=task_url
+
+        - name: Wait for the refresh to end
+          uri:
+            url: "{{ task_url }}"
+            method: GET
+            validate_certs: False
+            headers:
+              X-Auth-Token: "{{ manageiq.api_token }}"
+              Content-Type: "application/json" 
+            status_code: 200
+          register: task_result
+          until: task_result.json.state == 'Finished' or task_result.json.status == 'Error'
+          failed_when: task_result.json.status == 'Error'
+          retries: "{{max_retries}}"
+          delay: "{{retry_interval}}"
+        - debug: var=task_result
+
       always:
         - name: Revoke the SSO token
           ovirt_auth:

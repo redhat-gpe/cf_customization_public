@@ -40,6 +40,7 @@
             storage_domain: "vmstore00"
         - name: Start VM
           ovirt_vms:
+            auth: "{{ ovirt_auth }}"
             state: running
       always:
         - name: Revoke the SSO token

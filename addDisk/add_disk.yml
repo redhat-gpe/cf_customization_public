@@ -22,7 +22,8 @@
             url: "{{ url }}"
             username: "{{ username }}"
             password: "{{ password }}"
-            ca_file: "/usr/local/readablebytower/ovirt-ca.pem"
+            insecure: true
+            #ca_file: "/usr/local/readablebytower/ovirt-ca.pem"
         - name: Create and attach new disk to VM
           ovirt_disks:
             name: "{{ vm_id }}_data_disk"

@@ -1,7 +1,0 @@
----
-- name: MOTD
-  hosts: all
-  vars:
-    motd_ascii_art: "CloudForms Rocks"
-  roles:
-    - jtyr.motd

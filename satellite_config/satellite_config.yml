@@ -6,10 +6,10 @@
   - name: Install Cert
     command: "/usr/bin/yum -y localinstall http://sat.example.com/pub/katello-ca-consumer-latest.noarch.rpm"
   - name: Register with Satellite
-    command: "/usr/sbin/subscription-manager register --org Default_Organization --force --activationkey rhel6"
+    command: "/usr/sbin/subscription-manager register --org Default_Organization --force --activationkey rhel7"
     register: registered
   - name: Enable Repositories
-    command: subscription-manager repos --enable=rhel-6-server-satellite-tools-6.1-rpms
+    command: subscription-manager repos --enable=rhel-6-server-satellite-tools-6.2-rpms
     when: registered|success
   - name: Install Katello Agent
     yum: pkg=katello-agent state=latest
@@ -30,7 +30,7 @@
     command: "/usr/bin/puppet config --section main set certname {{ inventory_hostname }}"
     when: puppet_installed|success
   - name: Configure Puppet Agent Environment
-    command: "/usr/bin/puppet config --section agent set environment KT_Default_Organization_Library_RHEL6_2"
+    command: "/usr/bin/puppet config --section agent set environment KT_Default_Organization_Library_RHEL7_3"
     when: puppet_installed|success
   - name: Run Puppet Test
     command: "/usr/bin/puppet agent --test --noop --onetime --waitforcert 60"

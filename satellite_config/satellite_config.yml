@@ -9,7 +9,7 @@
     command: "/usr/sbin/subscription-manager register --org Default_Organization --force --activationkey rhel7"
     register: registered
   - name: Enable Repositories
-    command: subscription-manager repos --enable=rhel-6-server-satellite-tools-6.2-rpms
+    command: subscription-manager repos --enable=rhel-7-server-satellite-tools-6.2-rpms
     when: registered|success
   - name: Install Katello Agent
     yum: pkg=katello-agent state=latest

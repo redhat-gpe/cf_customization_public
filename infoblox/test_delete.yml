@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  serial: 1
+  gather_facts: False
+  vars:
+    target_fqdn: 'blah.example.com'
+  roles:
+    - role: infoblox_delete_host

@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  #user: root
+  serial: 1
+  gather_facts: False
+  vars_prompt:
+    - name: "infoblox_gridmaster"
+      prompt: "infoblox_gridmaster"
+      private: no
+    - name: "infoblox_username"
+      prompt: "Infoblox Username"
+      private: no
+    - name: "infoblox_password"
+      prompt: "Infoblox Password"
+      private: yes
+    - name: "target_fqdn"
+      prompt: "Host FQDN to Delete"
+      private: no
+  roles:
+    - role: infoblox_delete_host

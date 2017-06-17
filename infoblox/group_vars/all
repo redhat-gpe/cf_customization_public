@@ -1,0 +1,7 @@
+---
+infoblox_gridmaster: '192.168.222.100'
+infoblox_username: 'admin'
+infoblox_password: 'infoblox'
+infoblox_version: '2.2.2'
+infoblox_view: 'default'
+infoblox_network_view: 'default'

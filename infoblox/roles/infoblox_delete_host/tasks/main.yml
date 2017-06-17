@@ -1,0 +1,17 @@
+# --------------------------------------------------------------------
+# 1. Deleting hostrecord from infoblox bu useing  REST api
+# --------------------------------------------------------------------
+---
+- name: "Deleting hostrecords from Infoblox"
+  local_action: >
+    infoblox
+    fqdn="{{ target_fqdn }}"
+    iba_ipaddr="{{ infoblox_gridmaster }}"
+    iba_user="{{ infoblox_username }}"
+    iba_password="{{ infoblox_password }}"
+    iba_wapi_version="{{ infoblox_version }}"
+    iba_dns_view="{{ infoblox_view }}"
+    iba_network_view="{{ infoblox_network_view }}"
+    iba_verify_ssl="False"
+    state="present"
+  ignore_errors: yes

@@ -170,9 +170,9 @@ class Infoblox(object):
 	rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/record:host?name~=' + fqdn + '&view=' + self.iba_dns_view
 	hosts = []
 	try:
-            #print rest_url
-            #print self.iba_user
-            #print self.iba_verify_ssl
+            print rest_url
+            print self.iba_user
+            print self.iba_verify_ssl
            
 	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 	    r_json = r.json()
@@ -199,6 +199,8 @@ class Infoblox(object):
         """
         rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/network?network=' + network + '&network_view=' + self.iba_network_view
         try:
+	    print rest_url
+            print self.iba_verify_ssl
             r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
             r_json = r.json()
             if r.status_code == 200:

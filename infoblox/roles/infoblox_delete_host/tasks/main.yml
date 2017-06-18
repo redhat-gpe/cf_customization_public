@@ -14,4 +14,5 @@
     iba_network_view="{{ infoblox_network_view }}"
     iba_verify_ssl=False
     state="present"
-  ignore_errors: yes
+  ignore_errors: no
+  register: output

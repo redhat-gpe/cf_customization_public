@@ -63,7 +63,7 @@ EXAMPLES = '''
         iba_wapi_version="{{ infoblox_version }}"
         iba_dns_view="{{ infoblox_view }}"
         iba_network_view="{{ infoblox_network_view }}"
-        iba_verify_ssl="False"
+        iba_verify_ssl=False
         state="delete"
       ignore_errors: yes
 
@@ -122,7 +122,10 @@ class Infoblox(object):
 	self.iba_wapi_version = iba_wapi_version
 	self.iba_dns_view = iba_dns_view
 	self.iba_network_view = iba_network_view
-        self.iba_verify_ssl = iba_verify_ssl
+	if iba_verify_ssl.lower() == "true":
+	    self.iba_verify_ssl = True
+	else:
+            self.iba_verify_ssl = False
     
     def get_next_available_ips(self,network,number='10'):
 	""" Implements IBA next_available_ip REST API call

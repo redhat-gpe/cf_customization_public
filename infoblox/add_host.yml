@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: all
   serial: 1
   gather_facts: False
   vars:

@@ -8,7 +8,7 @@
     infoblox_username: "{{ infoblox_username }}"
     infoblox_password: "{{ infoblox_password }}"
   pre_tasks:
-    - debug: var=target_fqdn
+    - debug: var=target_hostname
     - set_fact:
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"
@@ -21,6 +21,7 @@
         target_cidr: "10.10.3.0/24"
         target_fqdn: "{{target_hostname}}.prod.example.com"
       when: target_fqdn | search("^production_.*")
+    - debug: var=target_fqdn
     - debug: var=target_cidr
 
   roles:

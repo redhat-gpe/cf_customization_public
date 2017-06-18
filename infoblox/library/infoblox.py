@@ -33,7 +33,7 @@ EXAMPLES = '''
         iba_wapi_version="{{ infoblox_version }}"
         iba_dns_view="{{ infoblox_view }}"
         iba_network_view="{{ infoblox_network_view }}"
-        iba_verify_ssl="False"
+        iba_verify_ssl=False
         state="add"
       ignore_errors: yes
 
@@ -106,7 +106,7 @@ class Infoblox(object):
        
     """
 
-    def __init__(self, iba_ipaddr, iba_user, iba_password, iba_wapi_version, iba_dns_view, iba_network_view, iba_verify_ssl=True):
+    def __init__(self, iba_ipaddr, iba_user, iba_password, iba_wapi_version, iba_dns_view, iba_network_view, iba_verify_ssl=False):
         '''Class initialization method
 	:param iba_ipaddr: IBA IP address of management interface
 	:param iba_user: IBA user name

@@ -131,14 +131,14 @@ class Infoblox(object):
 	"""
 	rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/network?network=' + network + '&network_view=' + self.iba_network_view
 	try:
-	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 	    r_json = r.json()
 	    if r.status_code == 200:
 		if len(r_json) > 0:
 		    net_ref = r_json[0]['_ref']
                     #Changed the num 1 to 10 for gettting 10 free ips 
 		    rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/' + net_ref + '?_function=next_available_ip&num='+number
-		    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+		    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 		    r_json = r.json()
 		    if r.status_code == 200 :
 			ip_v4 = r_json['ips']
@@ -174,8 +174,7 @@ class Infoblox(object):
             #print self.iba_user
             #print self.iba_verify_ssl
            
-	    #r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
-	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 	    r_json = r.json()
 	    if r.status_code == 200:
 		if len(r_json) > 0:
@@ -200,14 +199,14 @@ class Infoblox(object):
         """
         rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/network?network=' + network + '&network_view=' + self.iba_network_view
         try:
-            r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+            r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
             r_json = r.json()
             if r.status_code == 200:
                 if len(r_json) > 0:
                     net_ref = r_json[0]['_ref']
                     #Changed the num 1 to 10 for gettting 10 free ips 
                     rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/' + net_ref + '?_function=next_available_ip&num=5'
-                    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+                    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
                     r_json = r.json()
                     if r.status_code == 200:
                         ip_v4 = r_json['ips']
@@ -246,7 +245,7 @@ class Infoblox(object):
 	    #ipv4addr = 'func:nextavailableip:' + address
 	    ipv4addr =  self.get_next_available_ip(address)
             ipv4addr = str(ipv4addr) 
-            #print ipv4addr
+            print ipv4addr
 	else:
 	    if re.match("^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$", address):
 		ipv4addr = address
@@ -255,8 +254,7 @@ class Infoblox(object):
         rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/record:host' + '?_return_fields=ipv4addrs'
 	payload = '{"ipv4addrs": [{"configure_for_dhcp": false,"ipv4addr": "' + ipv4addr + '"}],"name": "' + fqdn + '","view": "' + self.iba_dns_view + '"}'
 	try:
-	    #r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl, data=payload)
-	    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False, data=payload)
+	    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl, data=payload)
 	    r_json = r.json()
 	    if r.status_code == 200 or r.status_code == 201:
 	    	return r_json['ipv4addrs'][0]['ipv4addr']
@@ -276,14 +274,14 @@ class Infoblox(object):
 	"""
 	rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/record:host?name=' + fqdn + '&view=' + self.iba_dns_view
 	try:
-	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+	    r = requests.get(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 	    r_json = r.json()
 	    if r.status_code == 200:
 		if len(r_json) > 0:
 		    host_ref = r_json[0]['_ref']
 		    if host_ref and re.match("record:host\/[^:]+:([^\/]+)\/", host_ref).group(1) == fqdn:
 			rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/' + host_ref
-			r = requests.delete(url=rest_url, auth=(self.iba_user, self.iba_password), verify=False)
+			r = requests.delete(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl)
 			if r.status_code == 200:
 			    return
 			else:

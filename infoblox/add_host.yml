@@ -9,11 +9,14 @@
     infoblox_password: "{{ infoblox_password }}"
   pre_tasks:
     - debug: var=target_fqdn
-    - set_fact: target_cidr="10.10.1.0/24"
+    - set_fact:
+        target_cidr: "10.10.1.0/24"
       when: target_fqdn | search("^qa_.*")
-    - set_fact: target_cidr="10.10.2.0/24"
+    - set_fact:
+        target_cidr: "10.10.2.0/24"
       when: target_fqdn | search("^test_.*")
-    - set_fact: target_cidr="10.10.3.0/24"
+    - set_fact:
+        target_cidr: "10.10.3.0/24"
       when: target_fqdn | search("^production_.*")
     - debug: var=target_cidr
 

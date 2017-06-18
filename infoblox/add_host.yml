@@ -7,7 +7,8 @@
     infoblox_gridmaster: "{{ infoblox_gridmaster }}"
     infoblox_username: "{{ infoblox_username }}"
     infoblox_password: "{{ infoblox_password }}"
-  pre_tasks:    
+  pre_tasks:
+    - debug: var=target_fqdn
     - set_fact: target_cidr="10.10.1.0/24"
       when: target_fqdn | search("^qa_.*")
       register: target_cidr
@@ -16,7 +17,8 @@
       register: target_cidr
     - set_fact: target_cidr="10.10.3.0/24"
       when: target_fqdn | search("^production_.*")
-      register: target_cidr      
+      register: target_cidr
+    - debug: var=target_cidr
 
   roles:
     - role: infoblox_add_host

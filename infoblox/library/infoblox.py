@@ -267,7 +267,8 @@ class Infoblox(object):
 	    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl, data=payload)
 	    r_json = r.json()
 	    if r.status_code == 200 or r.status_code == 201:
-	    	return r_json['ipv4addrs'][0]['ipv4addr']
+		return ipv4addr
+	    	#return r_json['ipv4addrs'][0]['ipv4addr']
 	    else:
 		if 'text' in r_json:
 		    raise InfobloxGeneralException(r_json['text'])

@@ -3,10 +3,10 @@
   serial: 1
   gather_facts: False
   vars:
-    target_fqdn: {{ inventory_hostname }}
-    infoblox_gridmaster: {{ infoblox_gridmaster }}
-    infoblox_username: {{ infoblox_username }}
-    infoblox_password: {{ infoblox_password }}
+    target_fqdn: "{{ inventory_hostname }}"
+    infoblox_gridmaster: "{{ infoblox_gridmaster }}"
+    infoblox_username: "{{ infoblox_username }}"
+    infoblox_password: "{{ infoblox_password }}"
   tasks:    
     - set_fact: target_cidr="10.10.1.0/24"
       when: target_fqdn | search("^qa_.*")

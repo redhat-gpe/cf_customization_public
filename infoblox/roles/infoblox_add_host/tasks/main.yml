@@ -16,3 +16,4 @@
     iba_verify_ssl=False
     state="absent"
   ignore_errors: no
+  register: output

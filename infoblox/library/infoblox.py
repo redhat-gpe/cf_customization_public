@@ -87,8 +87,13 @@ import re
 import requests
 import json
 import os
+
 import urllib3
 urllib3.disable_warnings()
+import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 class InfobloxNotFoundException(Exception):
     pass
 

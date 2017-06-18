@@ -262,7 +262,7 @@ class Infoblox(object):
 	    else:
 		raise InfobloxBadInputParameter('Expected IP or NET address in CIDR format')
         rest_url = 'https://' + self.iba_host + '/wapi/v' + self.iba_wapi_version + '/record:host'
-	payload = '{"ipv4addrs": [{"configure_for_dhcp": false,"ipv4addr": "' + ipv4addr + '"}],"name": "' + fqdn + '","view": "' + self.iba_dns_view + '"}'
+	payload = '{"ipv4addrs": [{"configure_for_dhcp": false,"ipv4addr": "' + ipv4addr + '"}],"configure_for_dns": false,"name": "' + fqdn + '","view": "' + self.iba_dns_view + '"}'
 	try:
 	    r = requests.post(url=rest_url, auth=(self.iba_user, self.iba_password), verify=self.iba_verify_ssl, data=payload)
 	    r_json = r.json()

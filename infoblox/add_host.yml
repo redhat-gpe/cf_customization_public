@@ -27,7 +27,6 @@
 
   roles:
     - role: infoblox_add_host
-      register: output
       
   post_tasks:
     - set_fact:

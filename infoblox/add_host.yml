@@ -3,7 +3,7 @@
   serial: 1
   gather_facts: False
   vars:
-    target_fqdn: "{{ inventory_hostname }}"
+    target_hostname: "{{ inventory_hostname }}"
     infoblox_gridmaster: "{{ infoblox_gridmaster }}"
     infoblox_username: "{{ infoblox_username }}"
     infoblox_password: "{{ infoblox_password }}"
@@ -11,12 +11,15 @@
     - debug: var=target_fqdn
     - set_fact:
         target_cidr: "10.10.1.0/24"
+        target_fqdn: "{{target_hostname}}.qa.example.com"
       when: target_fqdn | search("^qa_.*")
     - set_fact:
         target_cidr: "10.10.2.0/24"
+        target_fqdn: "{{target_hostname}}.test.example.com"
       when: target_fqdn | search("^test_.*")
     - set_fact:
         target_cidr: "10.10.3.0/24"
+        target_fqdn: "{{target_hostname}}.prod.example.com"
       when: target_fqdn | search("^production_.*")
     - debug: var=target_cidr
 

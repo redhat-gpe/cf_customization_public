@@ -8,13 +8,13 @@
     infoblox_username: {{ infoblox_username }}
     infoblox_password: {{ infoblox_password }}
   tasks:    
-    - set_fact target_cidr="10.10.1.0/24"
+    - set_fact: target_cidr="10.10.1.0/24"
       when: target_fqdn | search("^qa_.*")
       register: target_cidr
-    - set_fact target_cidr="10.10.2.0/24"
+    - set_fact: target_cidr="10.10.2.0/24"
       when: target_fqdn | search("^test_.*")
       register: target_cidr
-    - set_fact target_cidr="10.10.3.0/24"
+    - set_fact: target_cidr="10.10.3.0/24"
       when: target_fqdn | search("^production_.*")
       register: target_cidr      
 

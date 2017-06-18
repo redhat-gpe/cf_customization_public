@@ -31,5 +31,5 @@
       
   post_tasks:
     - set_fact:
-        ip_addr: output.ip_addr
+        ip_addr: "{{ output.ip_addr }}"
     - debug: var=ip_addr

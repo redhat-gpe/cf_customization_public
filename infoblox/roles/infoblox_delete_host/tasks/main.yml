@@ -12,6 +12,6 @@
     iba_wapi_version="{{ infoblox_version }}"
     iba_dns_view="{{ infoblox_view }}"
     iba_network_view="{{ infoblox_network_view }}"
-    iba_verify_ssl="False"
+    iba_verify_ssl=False
     state="present"
   ignore_errors: yes

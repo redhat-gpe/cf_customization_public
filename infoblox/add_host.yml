@@ -3,14 +3,14 @@
   serial: 1
   gather_facts: False
   vars:
-    target_fqdn: "{{ target_hostname }}"
+    target_hostname: "{{ target_hostname }}"
     vm_request_id: "{{ vm_request_id }} "
     infoblox_gridmaster: "{{ infoblox_gridmaster }}"
     infoblox_username: "{{ infoblox_username }}"
     infoblox_password: "{{ infoblox_password }}"
     infoblox_version: "{{ infoblox_version }}"
   pre_tasks:
-    - debug: var=target_hostname
+    - debug: var=target_
     - set_fact:
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"

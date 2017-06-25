@@ -3,7 +3,8 @@
   serial: 1
   gather_facts: False
   vars:
-    target_hostname: "{{ inventory_hostname }}"
+    target_hostname: "{{ target_hostname }}"
+    vm_request_id: "{{ vm_request_id }} "
     infoblox_gridmaster: "{{ infoblox_gridmaster }}"
     infoblox_username: "{{ infoblox_username }}"
     infoblox_password: "{{ infoblox_password }}"
@@ -13,22 +14,56 @@
     - set_fact:
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"
+        target_netmask: "255.255.255.0"
+        target_gateway: "10.10.1.1"
       when: target_hostname | search("^qa_.*")
     - set_fact:
         target_cidr: "10.10.2.0/24"
         target_fqdn: "{{target_hostname}}.test.example.com"
+        target_netmask: "255.255.255.0"
+        target_gateway: "10.10.2.1"
       when: target_hostname | search("^test_.*")
     - set_fact:
         target_cidr: "10.10.3.0/24"
         target_fqdn: "{{target_hostname}}.prod.example.com"
+        target_netmask: "255.255.255.0"
+        target_gateway: "10.10.3.1"
       when: target_hostname | search("^production_.*")
-    - debug: var=target_fqdn
-    - debug: var=target_cidr
-
+    - debug: var=target_hostname
   roles:
-    - role: infoblox_add_host
-      
+    # This role registers the output var which contains ip_addr
+    - role: infoblox_add_host      
   post_tasks:
+    - debug: var=output.ip_addr
+    - debug: var=vm_request_id
+    - debug: var=manageiq.api_url
+    - debug: var=manageiq.api_token
+    - debug: var=manageiq.service
+    - debug: var=manageiq.event_target
     - set_fact:
-        ip_addr: "{{ output.ip_addr }}"
-    - debug: var=ip_addr
+        # Build Request URI
+        req_url: "{{ manageiq.api_url }}/api/requests/{{ vm_request_id }}"
+        options:
+        - { ip_addr: "{{ output.ip_addr }}" }
+        - { addr_mode: ["static", "Static"] }
+        - { subnet_mask: "{{ target_netmask }}" }
+        - { gateway: "{{ target_gateway }}" }
+        - { vm_target_name: "{{ target_fqdn }}" }
+        - { linux_host_name: "{{ target_fqdn }}" }
+        - { vm_target_hostname: "{{ target_fqdn }}" }
+        - { host_name: "{{ target_fqdn }}" }
+    - name: Set the Service URL
+    - name: Update Request With New IP And Hostname Information
+      uri:
+        url: "{{ req_url }}"
+        method: POST
+        body_format: json
+        body:
+          action: edit
+          resources : "{{ options }}"
+        validate_certs: False
+        headers:
+          X-Auth-Token: "{{ manageiq.api_token }}"
+          Content-Type: "application/json"
+        status_code: 200
+      register: cfoutput

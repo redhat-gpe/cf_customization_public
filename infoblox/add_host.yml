@@ -3,7 +3,7 @@
   serial: 1
   gather_facts: False
   vars:
-    target_hostname: "{{ target_hostname }}"
+    target_fqdn: "{{ target_hostname }}"
     vm_request_id: "{{ vm_request_id }} "
     infoblox_gridmaster: "{{ infoblox_gridmaster }}"
     infoblox_username: "{{ infoblox_username }}"

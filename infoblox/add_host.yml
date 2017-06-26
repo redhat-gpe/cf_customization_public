@@ -29,6 +29,8 @@
         target_netmask: "255.255.255.0"
         target_gateway: "10.10.3.1"
       when: target_hostname | search("^production_.*")
+    - fail: msg="The target_hostname provided ({{target_hostname}}) did not match any of the supported patterns. 'target_fqdn' cannot be set. Exiting with an error."
+      when: target_fqdn is undefined
   roles:
     # This role registers the output var which contains ip_addr
     - role: infoblox_add_host      
@@ -42,19 +44,10 @@
     - debug: var=manageiq.api_url
     - debug: var=manageiq.api_token
     - debug: var=manageiq.service
-    - debug: var=manageiq.event_target
     - set_fact:
         # Build Request URI
         req_url: "{{ manageiq.api_url }}/api/requests/{{ vm_request_id }}"
-        options:
-        - { ip_addr: "{{ output.ip_addr }}" }
-        - { addr_mode: ["static", "Static"] }
-        - { subnet_mask: "{{ target_netmask }}" }
-        - { gateway: "{{ target_gateway }}" }
-        - { vm_target_name: "{{ target_fqdn }}" }
-        - { linux_host_name: "{{ target_fqdn }}" }
-        - { vm_target_hostname: "{{ target_fqdn }}" }
-        - { host_name: "{{ target_fqdn }}" }
+    - debug: var=req_url
     - name: Update Request With New IP And Hostname Information
       uri:
         url: "{{ req_url }}"
@@ -62,7 +55,16 @@
         body_format: json
         body:
           action: edit
-          resources : "{{ options }}"
+          resource:
+            options:
+              ip_addr: "{{ output.ip_addr }}"
+              addr_mode: ["static", "Static"]
+              subnet_mask: "{{ target_netmask }}"
+              gateway: "{{ target_gateway }}"
+              vm_target_name: "{{ target_fqdn }}"
+              linux_host_name: "{{ target_fqdn }}"
+              vm_target_hostname: "{{ target_fqdn }}"
+              host_name: "{{ target_fqdn }}"
         validate_certs: False
         headers:
           X-Auth-Token: "{{ manageiq.api_token }}"

@@ -35,6 +35,7 @@
     # This role registers the output var which contains ip_addr
     - role: infoblox_add_host      
   post_tasks:
+    - debug: var=output
     - debug: var=target_fqdn
     - debug: var=target_cidr
     - debug: var=target_netmask

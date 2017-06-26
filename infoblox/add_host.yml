@@ -10,7 +10,7 @@
     infoblox_password: "{{ infoblox_password }}"
     infoblox_version: "{{ infoblox_version }}"
   pre_tasks:
-    - debug: var=target_
+    - debug: var=target_hostname
     - set_fact:
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"
@@ -29,11 +29,14 @@
         target_netmask: "255.255.255.0"
         target_gateway: "10.10.3.1"
       when: target_hostname | search("^production_.*")
-    - debug: var=target_hostname
   roles:
     # This role registers the output var which contains ip_addr
     - role: infoblox_add_host      
   post_tasks:
+    - debug: var=target_fqdn
+    - debug: var=target_cidr
+    - debug: var=target_netmask
+    - debug: var=target_gateway
     - debug: var=output.ip_addr
     - debug: var=vm_request_id
     - debug: var=manageiq.api_url
@@ -52,7 +55,6 @@
         - { linux_host_name: "{{ target_fqdn }}" }
         - { vm_target_hostname: "{{ target_fqdn }}" }
         - { host_name: "{{ target_fqdn }}" }
-    - name: Set the Service URL
     - name: Update Request With New IP And Hostname Information
       uri:
         url: "{{ req_url }}"

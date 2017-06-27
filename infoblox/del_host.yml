@@ -2,7 +2,7 @@
 - hosts: all
   serial: 1
   gather_facts: False
-  #vars:
-  #  target_fqdn: "{{ target_fqdn }}"
+  vars:
+    target_fqdn: '{{ inventory_hostname }}'
   roles:
     - role: infoblox_delete_host

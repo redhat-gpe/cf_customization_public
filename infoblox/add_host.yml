@@ -62,6 +62,7 @@
               subnet_mask: "{{ target_netmask }}"
               gateway: "{{ target_gateway }}"
               vm_name: "{{ target_fqdn }}"
+              vm_target_name: "{{ target_fqdn }}"
               hostname: "{{ target_fqdn }}"
               linux_host_name: "{{ target_fqdn }}"
         validate_certs: False

@@ -9,11 +9,8 @@
     
   tasks:
     # Show CloudForms provided authentication back to its API
-    #- debug: var=manageiq
-    #- debug: var=manageiq.api_url
-    #- debug: var=manageiq.api_token
-    #- debug: var=manageiq.service
-    #- debug: var=manageiq.event_target
+    - debug: var=manageiq.api_url
+    - debug: var=manageiq.api_token
     # Show variables used to contact RHV-M API
     - debug: var=url
     - debug: var=username

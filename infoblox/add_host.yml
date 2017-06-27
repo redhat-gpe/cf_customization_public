@@ -11,6 +11,11 @@
   #  infoblox_version: "{{ infoblox_version }}"
   pre_tasks:
     - debug: var=target_hostname
+    - debug: var=infoblox_gridmaster
+    - debug: var=infoblox_username
+    - debug: var=infoblox_password
+    - debug: var=infoblox_version
+    - debug: var=vm_request_id
     - set_fact:
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"

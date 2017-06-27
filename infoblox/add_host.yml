@@ -29,19 +29,17 @@
       when: target_hostname | search("^production_.*")
     - fail: msg="The target_hostname provided ({{target_hostname}}) did not match any of the supported patterns. 'target_fqdn' cannot be set. Exiting with an error."
       when: target_fqdn is undefined
+    - debug: var=target_fqdn
+    - debug: var=target_cidr
+    - debug: var=target_netmask
+    - debug: var=target_gateway
   roles:
     # This role registers the output var which contains ip_addr
     - role: infoblox_add_host      
   post_tasks:
     - debug: var=output
-    - debug: var=target_fqdn
-    - debug: var=target_cidr
-    - debug: var=target_netmask
-    - debug: var=target_gateway
-    - debug: var=vm_request_id
     - debug: var=manageiq.api_url
     - debug: var=manageiq.api_token
-    - debug: var=manageiq.service
     - set_fact:
         # Build Request URI
         req_url: "{{ manageiq.api_url }}/api/requests/{{ vm_request_id }}"

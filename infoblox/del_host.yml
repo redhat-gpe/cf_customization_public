@@ -1,0 +1,8 @@
+---
+- hosts: all
+  serial: 1
+  gather_facts: False
+  #vars:
+  #  target_fqdn: "{{ target_fqdn }}"
+  roles:
+    - role: infoblox_delete_host

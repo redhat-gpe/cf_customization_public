@@ -57,14 +57,13 @@
           action: edit
           resource:
             options:
-              ip_addr: "{{ output.ip_addr }}"
               addr_mode: ["static", "Static"]
+              ip_addr: "{{ output.ip_addr }}"
               subnet_mask: "{{ target_netmask }}"
               gateway: "{{ target_gateway }}"
-              vm_target_name: "{{ target_fqdn }}"
+              vm_name: "{{ target_fqdn }}"
+              hostname: "{{ target_fqdn }}"
               linux_host_name: "{{ target_fqdn }}"
-              vm_target_hostname: "{{ target_fqdn }}"
-              host_name: "{{ target_fqdn }}"
         validate_certs: False
         headers:
           X-Auth-Token: "{{ manageiq.api_token }}"

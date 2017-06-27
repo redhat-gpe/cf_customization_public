@@ -15,19 +15,19 @@
         target_cidr: "10.10.1.0/24"
         target_fqdn: "{{target_hostname}}.qa.example.com"
         target_netmask: "255.255.255.0"
-        target_gateway: "10.10.1.1"
+        target_gateway: "10.10.1.254"
       when: target_hostname | search("^qa_.*")
     - set_fact:
         target_cidr: "10.10.2.0/24"
         target_fqdn: "{{target_hostname}}.test.example.com"
         target_netmask: "255.255.255.0"
-        target_gateway: "10.10.2.1"
+        target_gateway: "10.10.2.254"
       when: target_hostname | search("^test_.*")
     - set_fact:
         target_cidr: "10.10.3.0/24"
         target_fqdn: "{{target_hostname}}.prod.example.com"
         target_netmask: "255.255.255.0"
-        target_gateway: "10.10.3.1"
+        target_gateway: "10.10.3.254"
       when: target_hostname | search("^production_.*")
     - fail: msg="The target_hostname provided ({{target_hostname}}) did not match any of the supported patterns. 'target_fqdn' cannot be set. Exiting with an error."
       when: target_fqdn is undefined
@@ -40,7 +40,6 @@
     - debug: var=target_cidr
     - debug: var=target_netmask
     - debug: var=target_gateway
-    - debug: var=output.ip_addr
     - debug: var=vm_request_id
     - debug: var=manageiq.api_url
     - debug: var=manageiq.api_token

@@ -73,9 +73,9 @@ class CloudFormsInventory(object):
                 self.inventory['_meta']['hostvars'][hostname] = {
                     'cloudforms': self.hosts[hostname],
                 }
-                # include the ansible_host in the top level
-                if 'ansible_host' in self.hosts[hostname]:
-                    self.inventory['_meta']['hostvars'][hostname]['ansible_host'] = self.hosts[hostname]['ansible_host']
+                # include the ansible_ssh_host in the top level
+                if 'ansible_ssh_host' in self.hosts[hostname]:
+                    self.inventory['_meta']['hostvars'][hostname]['ansible_ssh_host'] = self.hosts[hostname]['ansible_ssh_host']
 
             data_to_print += self.json_format_dict(self.inventory, self.args.pretty)
 
@@ -352,12 +352,12 @@ class CloudFormsInventory(object):
                         # Add the host to the last tag
                         self.push(self.inventory[safe_parent_tag_name], 'hosts', host['name'])
 
-            # Set ansible_host to the first available ipv4 address
+            # Set ansible_ssh_host to the first available ipv4 address
             if 'ipaddresses' in host and host['ipaddresses'] and isinstance(host['ipaddresses'], list):
                 for ip in host['ipaddresses']:
                     try:
                         socket.inet_aton(ip)
-                        host['ansible_host'] = ip
+                        host['ansible_ssh_host'] = ip
                         break
                     except:
                         pass

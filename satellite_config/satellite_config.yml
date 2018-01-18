@@ -42,7 +42,7 @@
   - name: Start Puppet
     service: name=puppet state=started
   - name: Update all packages
-    command: "/usr/bin/yum -y update -x kernel"
+    command: "/usr/bin/yum -y update"
   handlers:
   - name: Enable Katello Agent
     service: name=goferd enabled=yes

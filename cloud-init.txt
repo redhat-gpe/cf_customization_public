@@ -1,0 +1,19 @@
+# Configure basic host parameeters:
+host_name: <%= evm[:hostname] %>
+user_name: root
+root_password: <%= MiqPassword.decrypt(evm[:root_password]) %>
+# For lab use only!
+ssh_pwauth: True
+disable_root: False
+#
+# Lab Key from root on workstation
+ssh_authorized_keys:
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1FEXwcEcpX/Hl7oWXUn0xzH2DTzTbQm2NpjfwsmQQAwiWEFHgfJguzqagI7OSyu83/QwENQoYQ1zn1gWWNdCuCsh8WvHb6nLV8mr94eBYAi4SjSWE5TjvgrxENrvemdIltaL3UgG+Xm6hwJKdtWa9OBQLsesiYUsJkh3MVIV9sSkDlhhOl1fwYfvG7/69EIgNMggn8TzNJFBEP2pso3vUP3r6Gyycj4C3f9BkSYkvBMxFcU8hIG06zyP9YctQu0JyY0QW6QJ06MlPXl+aToEFUBNUN+3ZYFNnwxP1jtuyqtT7EmfwGrUOZDimRLXHq5VYLESqi3mpkcnQatYzhPU3 root@workstation.example.com
+
+# Run commands to configure the network using the NetworkManager command
+# line tool. Note that this expects the subnet mask in the prefix format,
+# for example 24 instead of 255.255.255.0.
+runcmd:
+- nmcli connection down "System eth0"
+- nmcli connection modify "System eth0" ipv4.method manual ipv4.addr <%= evm[:ip_addr] %>/<%= evm[:subnet_mask] %> ipv4.gateway <%= evm[:gateway] %> ipv4.dns "<%= evm[:dns_servers] %>" ipv4.dns-search "<%= evm[:dns_suffixes] %>"
+- nmcli connection up "System eth0"
